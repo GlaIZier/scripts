@@ -78,12 +78,16 @@ if __name__ == '__main__':
 # -- get indeces
 # curl -XGET 'localhost:9200/_cat/indices?v&pretty'
 
+# -- get all mappings
+# curl -XGET 'http://localhost:9200/_mapping?pretty=true'
+
+# -- all nodes that have /4 node inside
 # curl -XGET 'localhost:9200/tree/_search?pretty' -H 'Content-Type: application/json' -d'
 # {
 #   "query": { "match": {"path": "/4" } }
 # }
 # '
-
+# -- get all nodes
 # curl -XGET 'localhost:9200/tree/_search?pretty' -H 'Content-Type: application/json' -d'
 # {
 #   "query": { "match_all": {} }
@@ -106,5 +110,20 @@ if __name__ == '__main__':
 #     }
 # }
 # '
-# --analyze path
+
+# -- analyze path
 # curl -XGET 'localhost:9200/tree/_analyze?field=bst.path&pretty' -d'/4/8/16'
+
+# -- Don't know why this query doesn't work
+# curl -XGET 'localhost:9200/tree/_search?pretty' -H 'Content-Type: application/json' -d'
+# {
+#   "query": { "prefix": {"path": "/1/2/4" } }
+# }
+# '
+
+# -- Result query to find all children of a given node!
+# curl -XGET 'localhost:9200/tree/_search?pretty' -H 'Content-Type: application/json' -d'
+# {
+#   "query": { "match_phrase_prefix": {"path": "/1/2/4/8/16/32/64/128/256/512/1024/2048/4096" } }
+# }
+# '
